@@ -1,4 +1,4 @@
-###### R Spatial
+###### R Spatial ######
 
 
 
@@ -52,7 +52,7 @@ plot(foram, carbon, col="green", cex=2, pch=19)
 
 
 
-# Far "dialogare" R con dati esterni: dati Covid-19
+# Facciamo "dialogare" R con dati esterni: dati Covid-19
 # da cartella "Ecologia_paesaggio_Lab) creata su Mac (scrivania): setwd("/Users/nome_utente/Desktop/nome_cartella")
 
 setwd("/Users/fillo/Desktop/Lab_ecologia_paesaggio")
