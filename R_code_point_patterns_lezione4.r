@@ -95,3 +95,52 @@ points(covids)
 # Salvo il mio WorkSpace nella cartella Lab: nome file "point_patterns.Rdata"
 
 
+#############################################################################2
+
+
+# Carico il file salvato "point_patterns.Rdata" dalla cartella Lab: setwd("/Users/nome_utente/Desktopo/lab") e load("nome_file.Rdata")
+setwd("/Users/fillo/Desktop/Lab_ecologia_paesaggio")
+load("point_patterns.Rdata")
+ls()
+
+# Richiamo la libreria "spatstat" per calcolare la densità
+library(spatstat)
+
+# Ricreo mappa densità Covid-19
+plot(d)
+
+# Cambiare colori e personalizzare grafico: palette di colori, cl <- colorRampPalette(c('serie_di_colori')) (numero di gradazione di colori)
+cl <- colorRampPalette(c('yellow', 'orange', 'red')) (100)
+plot(d,col=cl)
+
+
+# ESERCIZIO: fare la stessa cosa associando la densità a colore verde e blu
+
+cl2 <- colorRampPalette(c('green', 'blue')) (100)
+plot(d, col=cl2)
+# carico i punti sulla mappa: points()
+points(covids)
+
+
+## Ora carichiamo dei dati geografici dall'esterno, per visualizzare i confini di stato sulla mappa
+
+# 1. carichiamo i file coastlines su cartella "Lab_ecologia_paesaggio"
+# 2. creiamo l'oggetto coastlines, prima però installo rgdal e successivamente  richiamo il pacchetto library():
+install.packages("rgdal")
+library(rgdal)
+coastlines <- readOGR("ne_10m_coastline.shp")
+
+
+# Ora facciamo il plot delle coastlines con i dati del covid-19, aggiungiamo al plot precedente, cioè "plot(d, col=cl2)": plot(coastlines, add=T)
+plot(coastlines, add=T)
+#otteniamo una mappa di densità del covid coi punti nel mondo, densità massima in Europa.
+
+
+# Plot di una mappa di densità con le coastlines cambiando i colori:
+cl_Ex <- colorRampPalette(c('blue', 'light blue', 'green', 'light green')) (100)
+plot(d, col=cl_Ex)
+plot(coastlines, add=T)
+
+
+
+
