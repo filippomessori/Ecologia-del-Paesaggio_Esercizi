@@ -90,3 +90,8 @@ plot(d)
 
 points(covids)
 # aggiungo elementi puntuali al grafico
+
+
+# Salvo il mio WorkSpace nella cartella Lab: nome file "point_patterns.Rdata"
+
+
