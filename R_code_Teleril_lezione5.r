@@ -20,7 +20,7 @@ p224r63_2011 <- brick("p224r63_2011_masked.grd")
 plot(p224r63_2011)
 # Otteniamo un risultato della stessa area anallizzata da 7 diversi sensori che analizzano su diverse lunghezze d'onda, le seguenti:
 
-# B1= blu, B2= verde, B3= Rosso, B4= infrarosso vicino(NIR)
+# B1= blu, B2= verde, B3= Rosso, B4= infrarosso vicino(NIR), B5: medium infrared, B6: thermal infrared, B7: medium infrared.
 
 
 # Adesso settiamo i colori per i grafici, facendo una colorRampPalette: cl <- colorRampPalette(c('black','grey','light grey'))(100) # e poi facciamo un plot
