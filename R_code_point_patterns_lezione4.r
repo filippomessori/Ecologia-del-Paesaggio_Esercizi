@@ -208,3 +208,34 @@ points(covids)
 plot(s, col=cl_S, main="Estimate of cases")
 plot(coastlines, add=T)
 points(covids)
+
+
+
+
+############ Esempio: SAN MARINO  ###############
+
+# Richiamiamo dati
+library(spatstat)
+setwd("/Users/fillo/Desktop/Lab_ecologia_paesaggio")
+load("Tesi.RData")
+ls()
+head(Tesi) # Vediamo i dati a disposizione
+attach(Tesi) # alleghiamo al Work-Space la tabella
+
+# Point pattern sui dati: x, y, c(xmin, xmax), c(ymin, ymax) -----> per vedere velocemente minimo e massimo funzione "summary"
+summary(Tesi) 
+
+# x (min= 12.42, max=12.46), y(min=43.91, max= 43.94)
+
+# Creiamo il point pattern
+Tesippp <- ppp(Longitude, Latitude, c(12.41,12.47), c(43.90,43.95))
+
+# Creiamo mappa di Densità
+dT <- density(Tesippp)
+plot(dT)
+points(Tesippp)
+
+# Maggiore densità nella zona centrale dell'area di studio
+
+
+
