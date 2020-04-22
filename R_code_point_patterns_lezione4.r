@@ -144,3 +144,67 @@ plot(coastlines, add=T)
 
 
 
+################# INTERPOLAZIONE ################3
+
+
+# ESERCIZIO: ricreare la mappa a di densità a pattern puntuali del Covid.
+
+
+setwd("/Users/fillo/Desktop/Lab_ecologia_paesaggio") 
+load("point_patterns.Rdata")
+library(spatstat)
+ls() # vedere se ho richiamato il file giusto
+cl <- colorRampPalette(c('yellow', 'orange', 'red')) (100)
+plot(d,col=cl)
+points(covids)
+
+# Aggiungo coastlines
+library(rgdal)
+coastlines <- readOGR("ne_10m_coastline.shp")
+cl_Ex <- colorRampPalette(c('blue', 'light blue', 'green', 'light green')) (100)
+plot(d, col=cl_Ex, main="density") # main----> mi serve per dare un titolo al grafico
+plot(coastlines, add=T)
+points(covids)
+
+### FINE ESERCIZIO #####
+
+
+# Andiamo a fare l'Interpolazione dei valori, usando un algoritno di stima, per tutta l'estensione del pianeta, anche dove non abbiamo fatto le misure.
+# Spieghiamo al sistema qual'è la variabile che vogliamo andare ad interpolare ----> Casi covid-19 all'interno del nostro dataset.
+
+head(covid) # vedere i valori
+
+# Funzione "marks" del point pattern creato in precedenza "covids":
+marks(covids) <- covid$cases 
+
+s <- Smooth(covids)
+# Warning message:Least Squares Cross-Validation criterion was optimised at right-hand end of interval [0.323, 27.7]; use arguments ‘hmin’, ‘hmax’ to specify a wider interval for bandwidth ‘sigma’ 
+# questo perchè è difficile fare una stima delle zone a densità molto bassa.
+plot(s) # per vedere il grafico
+
+
+# ESERCIZIO: fare plot(s) con point patterns e coastlines
+
+cl_S <- colorRampPalette(c('blue', 'light blue', 'green', 'light green')) (100)
+plot(s, col=cl_S, main="Estimate of cases")
+plot(coastlines, add=T)
+points(covids)
+
+# FINE ESERCIZIO
+
+# Abbiamo una stima del numero di casi in Febbraio: vediamo che la maggior densità è in Cina
+
+
+######### MAPPA DEFINITIVA :
+
+par(mfrow=c(2,1))
+
+# Mappa di Densità effettiva
+plot(d, col=cl_Ex, main="Density")
+plot(coastlines, add=T)
+points(covids)
+
+# Mappa "Casi stimati"
+plot(s, col=cl_S, main="Estimate of cases")
+plot(coastlines, add=T)
+points(covids)
