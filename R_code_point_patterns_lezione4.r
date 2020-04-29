@@ -211,7 +211,6 @@ points(covids)
 
 
 
-
 ############ Esempio: SAN MARINO  ###############
 
 # Richiamiamo dati
@@ -235,7 +234,53 @@ dT <- density(Tesippp)
 plot(dT)
 points(Tesippp)
 
-# Maggiore densità nella zona centrale dell'area di studio
+# Maggiore densità nella zona centrale dell'area di studio---> in relazione ai prati aridi.
 
 
+# Procediamo con l'interpolazione: funzione marks(), ad ogni punto del point-pattern associamo il valore di interessw cioè la "species richness"
+marks(Tesippp) <- Tesi$Species_richness
 
+# Creiamo un mappa di pixel continua tra un punto ed un altro, usando la funzione: Smooth(), grazie alla funzione marks() conosce quali sono i punti che deve inerpolare.
+interpol <- Smooth(Tesippp)
+plot(interpol)
+points(Tesippp, col="green")
+
+# Carichiamo nella cartella i file (Lab_ecologia_paesaggio) San_Marino e richiamiamo (o installo: install.packages) il pacchetto "rgdal"
+library(rgdal)
+sanmarino <- readOGR("San_Marino.shp") # carico il file di interesse 
+plot(sanmarino) # confini San Marino
+
+# aggiungiamo alla mappa l'interpolazione fatta precedentemente:
+plot(interpol, add=T)
+points(Tesippp, col="green")
+plot(sanmarino, add=T) # rimettere i confini sopra alla mappa di interpol
+
+dev.off()
+
+### ESERCIZIO 1: fare un plot multiframe della mappa con Interpolazione e densità
+
+par(mfrow=c(2,1))
+# Interpol
+plot(sanmarino)
+plot(interpol, add=T)
+points(Tesippp, col="green")
+plot(sanmarino, add=T)
+# Densità
+plot(sanmarino)
+plot(dT, add=T)
+points(Tesippp, col="black")
+plot(sanmarino, add=T)
+
+### ESERCIZIO 2: fare stesso plot con 2 colonne ed 1 riga
+
+par(mfrow=c(1,2))
+# Interpol
+plot(sanmarino)
+plot(interpol, add=T)
+points(Tesippp, col="green")
+plot(sanmarino, add=T)
+# Densità
+plot(sanmarino)
+plot(dT, add=T)
+points(Tesippp, col="black")
+plot(sanmarino, add=T)
