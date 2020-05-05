@@ -95,3 +95,46 @@ View(output)
 # Salviamo il Work-Space: "Deforestation.Rdata"
 
 
+
+ ##### Parte 2 #####
+
+# Set della Working-Directory creata su Mac (scrivania): setwd("/Users/nome_utente/Desktop/nome_cartella")
+setwd("/Users/fillo/Desktop/Lab_ecologia_paesaggio")
+
+# Carichiamo il Work-Space: "Deforestation.Rdata"
+load("Deforestation.Rdata")
+
+ls() # per controllare file a disposizione
+
+
+# Richiamo librerie:
+library(raster)
+library(RStoolbox)
+
+
+
+# Ricreiamo grafico della volta precedente:
+par(mfrow=c(1,2))
+cl <- colorRampPalette(c('green','black'))(100) 
+plot(d1c$map, col=cl, main="Defor_1")
+cl <- colorRampPalette(c('green','black'))(100) 
+plot(d2c$map, col=cl, main="defor_2")
+
+
+# Richiamo output:
+output <- data.frame(cover,before,after)
+output
+
+# facciamo un ggplot: grafico basato su libreria "ggplot2", sul dataset "output"
+library(ggplot2)
+
+# Agr= agricoltura, For= foresta
+
+ggplot(output, aes(x=cover, y=before, color=cover)) + geom_bar(stat="identity", fill="white") 
+# Grafico che mette a confronto in percentuale la copertura in agr e for, nel primo caso (prima della deforestazione).
+dev.off()
+
+# ESERCIZIO: fare grafico del confronto land-cover dopo la deforestazione:
+
+ggplot(output, aes(x=cover, y=after, color=cover)) + geom_bar(stat="identity", fill="white")
+
