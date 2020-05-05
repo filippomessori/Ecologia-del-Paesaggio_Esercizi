@@ -138,3 +138,21 @@ dev.off()
 
 ggplot(output, aes(x=cover, y=after, color=cover)) + geom_bar(stat="identity", fill="white")
 
+dev.off()
+
+
+# Plot dei 2 istogrammi, visualizzabili insieme, nuovo pacchetto ("gridExtra) perchè il par non funziona per ggplot:
+install.packages("gridExtra")
+library(gridExtra)
+
+
+# Funzione grid.arrange(), che va a prendere vari plot e li mette insieme nello stesso grafico, quindi uguale al "par" ma funzionante per ggplot
+
+grafico1 <- ggplot(output, aes(x=cover, y=before, color=cover)) + geom_bar(stat="identity", fill="white")
+grafico2 <- ggplot(output, aes(x=cover, y=after, color=cover)) + geom_bar(stat="identity", fill="white")
+
+
+# ESERCIZIO: usare grid.arrange per creare un grafico unico
+
+grid.arrange(grafico1, grafico2, nrow = 1) # crescita Agr vertiginosa rispetto alla foresta
+
