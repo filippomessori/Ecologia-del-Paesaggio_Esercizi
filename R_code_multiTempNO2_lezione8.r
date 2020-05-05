@@ -1,0 +1,68 @@
+############# ANALISI NO2 data presi da ESA ################
+
+
+# Set della Working-Directory creata su Mac (scrivania): setwd("/Users/nome_utente/Desktop/nome_cartella")
+setwd("/Users/fillo/Desktop/Lab_ecologia_paesaggio")
+library(raster)
+
+
+# Carichiamo nella nostra cartella "Lab_ecologia_paesaggio" : https://iol.unibo.it/mod/resource/view.php?id=418956
+
+# plot della prima immagine:
+EN01 <- raster("EN_0001.png")
+plot(EN01)
+
+
+# ESERCIZIO: importare tutte le altre immagini
+EN02 <- raster("EN_0002.png")
+EN03 <- raster("EN_0003.png")
+EN04 <- raster("EN_0004.png")
+EN05 <- raster("EN_0005.png")
+EN06 <- raster("EN_0006.png")
+EN07 <- raster("EN_0007.png")
+EN08 <- raster("EN_0008.png")
+EN09 <- raster("EN_0009.png")
+EN10 <- raster("EN_0010.png")
+EN11 <- raster("EN_0011.png")
+EN12 <- raster("EN_0012.png")
+EN13 <- raster("EN_0013.png")
+
+
+
+# Facciamo una colorRamp e plottiamo insieme due immagini, una per l'inizio (Alta concentrazione NO2) e una per la fine (concentrazione più bassa)
+
+cl <- colorRampPalette(c('red','orange','yellow'))(100) #
+par(mfrow=c(1,2))
+plot(EN01, col=cl)
+plot(EN13, col=cl)
+
+dev.off()
+
+
+# Ora vediamo la differnza di NO2 tra le 2 immaggini:
+
+difno2 <- EN13 - EN01
+cldif <- colorRampPalette(c('blue','black','yellow'))(100) #
+plot(difno2, col=cldif) # Zona Lombardia ha fatto esperienza di una differenza maggiore di NO2
+
+
+# Realizziamo le statistiche di base: 
+
+# 1) plottiamo tutte le mappe: metodo più lento
+par(mfrow=c(4,4))
+plot(EN01, col=cl)
+plot(EN02, col=cl)
+plot(EN03, col=cl)
+plot(EN04, col=cl)
+plot(EN05, col=cl)
+plot(EN06, col=cl)
+plot(EN07, col=cl)
+plot(EN08, col=cl)
+plot(EN09, col=cl)
+plot(EN10, col=cl)
+plot(EN11, col=cl)
+plot(EN12, col=cl)
+plot(EN13, col=cl)
+
+
+# Salviamo work-space: "Temp_NO2.Rdata"
