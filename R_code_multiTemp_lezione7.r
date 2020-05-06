@@ -146,7 +146,7 @@ install.packages("gridExtra")
 library(gridExtra)
 
 
-# Funzione grid.arrange(), che va a prendere vari plot e li mette insieme nello stesso grafico, quindi uguale al "par" ma funzionante per ggplot
+# Funzione "grid.arrange()", che va a prendere vari plot e li mette insieme nello stesso grafico, quindi uguale al "par" ma funzionante per ggplot
 
 grafico1 <- ggplot(output, aes(x=cover, y=before, color=cover)) + geom_bar(stat="identity", fill="white")
 grafico2 <- ggplot(output, aes(x=cover, y=after, color=cover)) + geom_bar(stat="identity", fill="white")
@@ -155,4 +155,33 @@ grafico2 <- ggplot(output, aes(x=cover, y=after, color=cover)) + geom_bar(stat="
 # ESERCIZIO: usare grid.arrange per creare un grafico unico
 
 grid.arrange(grafico1, grafico2, nrow = 1) # crescita Agr vertiginosa rispetto alla foresta
+
+
+
+#### Parte 3
+
+# Ricreiamo il grafico ottenuto nella parte 2
+
+setwd("/Users/fillo/Desktop/Lab_ecologia_paesaggio")
+library(raster)
+library(ggplot2)
+library(gridExtra)
+cover <- c("Agriculture","Forest")
+before <- c(10.9,89.1)
+after <- c(48.2,51.8)
+output <- data.frame(cover,before,after)
+output
+grafico1 <- ggplot(output, aes(x=cover, y=before, color=cover)) + geom_bar(stat="identity", fill="white")
+grafico2 <- ggplot(output, aes(x=cover, y=after, color=cover)) + geom_bar(stat="identity", fill="white")
+grid.arrange(grafico1, grafico2, nrow = 1)
+
+
+# Ottenere grafici con una scala da 0-100: vogliamo impostare limite delle Y da 0 a 1000 -----> ylim(0, 100)
+
+grafico1 <- ggplot(output, aes(x=cover, y=before, color=cover)) + geom_bar(stat="identity", fill="white") + ylim(0, 100)
+
+grafico2 <- ggplot(output, aes(x=cover, y=after, color=cover)) + geom_bar(stat="identity", fill="white") + ylim(0, 100)
+
+grid.arrange(grafico1, grafico2, nrow = 1)
+
 
