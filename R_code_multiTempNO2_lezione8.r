@@ -65,4 +65,35 @@ plot(EN12, col=cl)
 plot(EN13, col=cl)
 
 
-# Salviamo work-space: "Temp_NO2.Rdata"
+# Salviamo work-space nella cartella "Lab_ecologia_paesaggio" : "Temp_NO2.Rdata"
+
+
+##### Parte 2
+
+setwd("/Users/fillo/Desktop/Lab_ecologia_paesaggio")
+library(raster)
+load("Temp_NO2.Rdata")
+ls() # controlliamo che ci siano i file EN
+
+
+
+# 2) Usiamo funzione lapply: per plottare una lista di dati -----> plottare i dati tutti insieme
+
+# Creiamo dentro la cartella "Lab_ecologia_paesaggio" una nuova cartella chiamata "esa_no2" e al suo interno copiamo tutti i nostri file EN.png
+# Facciamo un nuovo set della working-directorry:
+
+setwd("/Users/fillo/Desktop/Lab_ecologia_paesaggio/esa_no2")
+list.files(pattern=".png") # lista dei soli files .png della cartella "esa_no2"
+rlist <- list.files(pattern=".png")
+
+# Carichiamo i dati tutti assieme: funzione ---->  lapply(), spiegata su sito Rdocumentation (https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/lapply)
+
+listafinale <- lapply(rlist, raster)
+listafinale # lista di tutti e 13 i file caricati (all'interno di una lista)
+EN <- stack(listafinale) # unica immagine dei 13 file ----> 13 bande, dove ogni banda è un tempo da Gennaio(EN01) a Marzo(EN13).
+
+# Ora facciamo il plot
+cl <- colorRampPalette(c('red','orange','yellow'))(100) #
+plot(EN, col=cl)
+
+# Salviamo il working-space nella cartella "Lab_ecologia_paesaggio": "lapply_NO2.Rdata"
