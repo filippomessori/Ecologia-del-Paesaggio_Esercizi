@@ -97,3 +97,34 @@ cl <- colorRampPalette(c('red','orange','yellow'))(100) #
 plot(EN, col=cl)
 
 # Salviamo il working-space nella cartella "Lab_ecologia_paesaggio": "lapply_NO2.Rdata"
+
+
+
+##### Parte 3
+
+# Set della Working-Directory creata su Mac (scrivania): setwd("/Users/nome_utente/Desktop/nome_cartella")
+setwd("/Users/fillo/Desktop/Lab_ecologia_paesaggio")
+library(raster)
+load("lapply_NO2.Rdata")
+ls() # controlliamo che ci siano i file EN
+
+# Differenza tra valore pixel immagine 1 con pixel ultima immagine (tra immagini EN_13 ed EN_01)
+
+difEN <- EN$EN_0013 - EN$EN_0001
+
+# Creiamo una colorRamp per la differenza di colore, poi facciamo un Plot:
+cld <- colorRampPalette(c('blue','white','red'))(100) # 
+plot(difEN, col=cld)
+
+# Ora facciamo plot dell'intero Set, prima cambiamo la colorRamp:
+cl <- colorRampPalette(c('red','orange','yellow'))(100) #
+plot(EN, col=cl)
+
+
+
+# Facciamo analisi statistica dei dati riguardanti NO2 in questi mesi:
+
+boxplot(EN)
+boxplot(EN, horizontal=T) # visualizzazione orizzontale
+boxplot(EN, horizontal=T,outline=F) 
+boxplot(EN, horizontal=T,outline=F,axes=T)
