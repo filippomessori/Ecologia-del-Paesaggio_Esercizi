@@ -14,7 +14,7 @@
 # 10) R_code_Patches
 # 11) R_code_Crop
 # 12) SPECIES DISTRIBUTION MODELLING
-# 13) PROGETTO ESAME
+# 13) PROGETTO ESAME: FCOVER - FAPAR – NDVI: Analisi Multitemporale (2000 - 2019)
 
 ################################
 ####################################
@@ -1662,3 +1662,153 @@ m1 <- sdm(Occurrence ~ elevation + precipitation + temperature + vegetation, dat
 p1 <- predict(m1, newdata=preds) # Fare previsione in base ai dati "predittivi" (FM)
 plot(p1, col=cl) # facciamo il plot
 points(species[species$Occurrence == 1,], pch=16) # mappa previsionale della distibuzione della specie in base alle 4 variabili (FM)
+
+
+
+############################
+############################
+############################
+
+
+
+
+###  13) ESAME
+
+## FCOVER - FAPAR – NDVI: Analisi Multitemporale (2000 - 2019)
+
+
+
+# Fraction of Vegetation Cover (FCover) corrisponde alla frazione di terreno coperta da vegetazione verde, quantifica l'estensione spaziale della vegetazione.
+
+setwd("/Users/fillo/Desktop/Esame_ecologia_paesaggio/FCOVER")
+library(ncdf4)
+library(raster)
+
+# Primo metodo:
+
+# Carico i file relativi alla FCOVER uno ad uno: https://land.copernicus.vgt.vito.be/PDF/portal/Application.html#Browse;Root=512260;Collection=1000081;Time=NORMAL,NORMAL,-1,,,-1,,
+
+FC_2000 <- raster("FC_2000.nc")
+FC_2005 <- raster("FC_2005.nc")
+FC_2010 <- raster("FC_2010.nc")
+FC_2015 <- raster("FC_2015.nc")
+FC_2019 <- raster("FC_2019.nc")
+
+
+# Faccio un plot per mettere a confronto i grafici dei diversi anni:
+
+clFC <- colorRampPalette(c('gray87','wheat4','yellow', 'green', 'darkgreen'))(100) #
+par(mfrow=c(3,2))
+plot(FC_2000, col=clFC, main="FCOVER_2000")
+plot(FC_2005, col=clFC, main="FCOVER_2005")
+plot(FC_2010, col=clFC, main="FCOVER_2010")
+plot(FC_2015, col=clFC, main="FCOVER_2015")
+plot(FC_2019, col=clFC, main="FCOVER_2019")
+
+
+# Metodo 2:
+
+list.files(pattern=".nc") # lista dei singoli file dentro la cartella 
+rFClist <- list.files(pattern=".nc") 
+listaFC <- lapply(rFClist, raster)
+FC.multitemp <- stack(listaFC) # unica immagine dei 5 file
+plot(FC.multitemp, col=clFC)
+# Osserviamo com'è cambiata durante gli anni la Fcover nel mondo. Dal 2000 al 2019, nel periodo tra il 21/03 al 20/07
+
+
+
+# Plot di confronto tra grafico 2019 e 2000:
+
+par(mfrow=c(1,2))
+plot(FC_2000, col=clFC, main="FCOVER_2000")
+plot(FC_2019, col=clFC, main="FCOVER_2019")
+
+
+# Vera e propria differenza tra 2000 e 2019
+
+difFC <- FC_2019 - FC_2000
+cldifFC <- colorRampPalette(c('red','lightgray','darkgreen'))(100) #
+plot(difFC, col=cldifFC, main="FC2019 - FC2000")
+
+
+### 2) FAPAR
+
+# Il FAPAR () quantifica la frazione della radiazione solare assorbita dalle foglie per l'attività di fotosintesi. Quindi, si riferisce solo agli elementi verdi e vivi della Canopy.
+
+# Scarico i dati relativi al FAPAR 2019 e 2000 sulla cartella dei dati FC e carico i dati su R: https://land.copernicus.vgt.vito.be/PDF/portal/Application.html#Browse;Root=512260;Collection=1000084
+
+FAPAR_2019 <- raster("FP_2019.nc")
+FAPAR_2000 <- raster("FP_2000.nc")
+
+
+# Faccio un plot per confrontare i dati tra loro:
+
+clFAPAR <- colorRampPalette(c('pink','red','darkred'))(100)
+par(mfrow=c(1,2))
+plot(FAPAR_2000, col=clFAPAR, main="FAPAR_2000")
+plot(FAPAR_2019, col=clFAPAR, main="FAPAR_2019")
+
+
+# Differernze tra FAPAR 2019 e FAPAR 2000
+
+difFAPAR <- FAPAR_2019 - FAPAR_2000
+cldifFP <- colorRampPalette(c('black','gray','darkred'))(100)
+plot(difFAPAR, col=cldifFP, main="FAPAR2019 - FAPAR2000")
+
+
+### 3) NDVI
+
+# Ora  analizzo le differenze tra NDVI (Normalized Difference Vegetation Index) del 2019 e 2000.
+# NDVI = (REF_nir – REF_red)/(REF_nir + REF_red), una pianta SANA riflette molto nel Nir e nel green, e poco nel Red e nel blue (alta assorbanza---> Fotosintesi).
+# In una pianta "sotto stress" avremo bassi valori di riflettanza per Nir e green e valori di riflettanza più alti per Red e blue.
+
+# Scarico i dati relativi a NDVI 2019 e 2000 sulla cartella dei dati FC e carico i dati su R: https://land.copernicus.vgt.vito.be/PDF/portal/Application.html#Browse;Root=513186;Collection=1000085;Time=NORMAL,NORMAL,-1,,,-1,,
+
+march_2000 <- raster("march_2000.nc")
+march_2019 <- raster("march_2019.nc")
+july_2000 <- raster("july_2000.nc")
+july_2019 <- raster("july_2000.nc")
+
+# Faccio un plot per confrontare i dati tra loro:
+
+clNDVI <- colorRampPalette(c('red','lightblue','green', 'darkgreen'))(100) #
+par(mfrow=c(2,2))
+plot(march_2000, col=clNDVI, main="Marzo_2000_NDVI")
+plot(july_2000, col=clNDVI, main="LUglio_2000_NDVI")
+plot(march_2019, col=clNDVI, main="Marzo_2019_NDVI")
+plot(july_2019, col=clNDVI, main="Luglio_2019_NDVI")
+
+                           
+# Differernze tra NDVI 2019 (Marzo-Luglio) e NDVI 2000 (Marzo-Luglio):
+
+diff2000 <- july_2000 - march_2000
+diff2019 <- july_2019 - march_2019
+cldiffNDVI <- colorRampPalette(c('black', 'lightgray', 'green'))(100) #
+par(mfrow=c(1,2))
+plot(diff2000, col=cldiffNDVI, main="NDVI_07/2000 - NDVI_03/2000")
+plot(diff2019, col=cldiffNDVI, main="NDVI_07/2019 - NDVI_03/2019")
+                               
+                               
+                               
+# CONCLUSIONI:
+                               
+# Faccio un confronto tra FCOVER, FAPAR e NDVI del 2000 e 2019. Mettendo anche le differenze.                           
+
+par(mfrow=c(4,3))
+
+plot(FC_2000, col=clFC, main="FCOVER_2000")
+plot(FC_2019, col=clFC, main="FCOVER_2019")            # FCOVER
+plot(difFC, col=clFC, main="FC2019-FC2000")
+                               
+plot(FAPAR_2000, col=clFAPAR, main="FAPAR_2000")
+plot(FAPAR_2019, col=clFAPAR, main="FAPAR_2019")                     # FAPAR
+plot(difFAPAR, col=cldifFP, main="FAPAR2020 - FAPAR2000")
+                           
+
+plot(march_2000, col=clNDVI, main="Marzo_2000_NDVI")
+plot(july_2000, col=clNDVI, main="Luglio_2000_NDVI")
+plot(march_2019, col=clNDVI, main="Marzo_2019_NDVI")                             # NDVI
+plot(july_2019, col=clNDVI, main="Luglio_2019_NDVI")
+plot(diff2000, col=cldiffNDVI, main="NDVI_03/2019 - NDVI_03/2000")
+plot(diff2019, col=cldiffNDVI, main="NDVI_07/2019 - NDVI_07/2000")
+
